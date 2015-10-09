@@ -1,4 +1,4 @@
-hh<?php
+<?php
 	define('DB_USER',"e5ingsoft2");
 	define('DB_PASSWORD',"7MLtw21");
 	define('DB_DATABASE',"e5ingsoft2");
