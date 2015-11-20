@@ -1,6 +1,7 @@
 <?php
 
 	require_once __DIR__ . '/db_connect.php';
+	require_once __DIR__ . '/notif.php';
 
 	//$db = new mysqli("localhost","root","","smed");
 	$db = new DB_Connect();
@@ -43,6 +44,7 @@
 			if($result){
 				$response["sucess"] = 1;
 				$response["message"] = "Junta grupal creada.";
+				newNotif("Nueva junta con el maestro.");	
 				echo json_encode($response);
 			}else{
 				$response["sucess"] = 0;

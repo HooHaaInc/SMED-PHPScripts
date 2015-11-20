@@ -1,2 +1,0 @@
-# SMED-PHPScripts
-php swag

@@ -13,28 +13,27 @@
 	//Arreglo para la respuesta de JSON.
 	$response = array();
 
-	$result = $db->query("SELECT * FROM Grupo");
+	$result = $db->query("SELECT * FROM Reporte");
 
 	if($result->num_rows > 0){
-		$response["grupos"] = array();
+		$response["reportes"] = array();
 
 		while($row = $result->fetch_array()){
-			$grupo = array();
-			$grupo["id_grupo"] = $row["id_grupo"];
-			$grupo["id_maestro"] = $row["id_maestro"];
-			$grupo["clave"] = $row["clave"];
-			$grupo["turno"] = $row["turno"];
+			$reporte = array();
+			$reporte["id_reporte"] = $row["id_reporte"];
+			$reporte["id_alumno"] = $row["id_alumno"];
+			$reporte["fecha"] = $row["fecha"];
+			$reporte["comentario"] = $row["comentario"];
 
-			array_push($response["grupos"],$grupo);
+			array_push($response["reportes"],$reporte);
 		}
 		$response["sucess"] = 1;
-		$response["message"] = "Grupos encontrados.";
+		$response["message"] = "Reportes encontrados.";
 		echo json_encode($response);
 	}else{
 		$response["sucess"] = 0;
-		$reponse["message"] = "No hay grupos.";
+		$reponse["message"] = "No hay reportes.";
 
 		echo json_encode($reponse);
 	}
-
 ?>

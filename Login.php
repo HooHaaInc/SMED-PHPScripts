@@ -37,6 +37,23 @@
 		$aux = $db->query("SELECT * from Persona WHERE id_persona = '$id_persona'");
 		$tipo_persona = $aux->fetch_object()->tipo_persona;
 
+
+		// TEST PARA REGRESAR ID_MAESTRO
+		if($tipo_persona == 1){
+				$id_alumno = $db->query("SELECT * FROM Alumno WHERE id_persona = '$id_persona'");
+				$id_alumno = $id_alumno->fetch_object()->id_alumno;
+
+		}else
+			if($tipo_persona == 2){
+				$id_maestro = $db->query("SELECT * FROM Maestro WHERE id_persona = '$id_persona'");
+				$id_maestro = $id_maestro->fetch_object()->id_maestro;
+
+			}else{
+				$id_padre = $db->query("SELECT * FROM Padre WHERE id_persona = '$id_padre'");
+				$id_padre = $id_padre->fetch_object()->id_padre;
+			}
+		
+
 		if($correoServer == $correo){			
 			if($pass == $password){
 				$response["sucess"] = 1;
@@ -47,6 +64,9 @@
 				$response["apellido_paterno"] = $apellido_paterno;
 				$response["apellido_materno"] = $apellido_materno;
 				$response["tipo_persona"] = $tipo_persona;
+				if($tipo_persona == 1) $response["id_alumno"] = $id_alumno;
+				if($tipo_persona == 2) $response["id_maestro"] = $id_maestro;
+				if($tipo_persona == 3) $response["id_padre"] = $id_padre;
 				echo json_encode($response);
 				
 			}else{

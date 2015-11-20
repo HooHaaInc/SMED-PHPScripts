@@ -15,13 +15,14 @@
 	$response = array();
 
 	//Se checa por los campos requeridos.
-	if(isset($_POST['correo']) && isset($_POST['clave']) && isset($_POST['nombre']) && isset($_POST['apellido_paterno']) && isset($_POST['apellido_materno']) && isset($_POST['tipo_persona'])){
+	if(isset($_POST['correo']) && isset($_POST['clave']) && isset($_POST['nombre']) && isset($_POST['apellido_paterno']) && isset($_POST['apellido_materno']) && isset($_POST['tipo_persona']) && isset($_POST['gcm_regid'])){
 		$email = $_POST['correo'];
 		$clave = $_POST['clave'];
 		$nombre = $_POST['nombre'];
 		$apellido_paterno = $_POST['apellido_paterno'];
 		$apellido_materno = $_POST['apellido_materno'];
 		$tipo_persona = $_POST['tipo_persona'];
+		$gcm_regid = $_POST['gcm_regid'];
 
 		//Se inserta un nuevo renglón.
 		//$result = mysql_query("INSERT INTO loginInfo(email,password) VALUES('$email','$password')");
@@ -39,17 +40,26 @@
 
 			$id_persona = $query->fetch_object()->id_persona;
 
-			$result2 = $db->query("INSERT INTO Usuario(id_persona,correo,clave,tipo_usuario)
-									VALUES('$id_persona','$email','$clave','$tipo_persona')");
+			$result2 = $db->query("INSERT INTO Usuario(id_persona,correo,clave,tipo_usuario,gcm_regid)
+									VALUES('$id_persona','$email','$clave','$tipo_persona','$gcm_regid')");
 
 			if($tipo_persona == 1){
-
+				$result2 = $db->query("INSERT INTO Alumno(id_persona) VALUES('$id_persona')");
+				$id_a = $db->query("SELECT * FROM Alumno WHERE id_persona = '$id_persona'");
+				$id_alumno = $id_a->fetch_object()->id_alumno;
+				$response["id_alumno"] = $id_alumno;
 
 			}else if($tipo_persona == 2){
 				$result2 = $db->query("INSERT INTO Maestro(id_persona) VALUES('$id_persona')");
+				$id_m = $db->query("SELECT * FROM Maestro WHERE id_persona = '$id_persona'");
+				$id_maestro = $id_m->fetch_object()->id_maestro;
+				$response["id_maestro"] = $id_maestro;
 
 			}else{
 				$result2 = $db->query("INSERT INTO Padres(id_persona) VALUES('$id_persona')");
+				$id_p = $db->query("SELECT * FROM Padre WHERE id_persona = '$id_persona'");
+				$id_padre = $id_p->fetch_object()->id_padre;
+				$response["id_padre"] = $id_padre;
 
 			}
 
@@ -61,6 +71,7 @@
 				$response["apellido_paterno"] = $apellido_paterno;
 				$response["apellido_materno"] = $apellido_materno;
 				$response["tipo_persona"] = $tipo_persona;
+				
 				//Se envía la información por medio de JSON.
 				echo json_encode($response);
 			}else{
@@ -77,7 +88,7 @@
 		
 	}else{
 		$response["sucess"] = 0;
-		$response["message"] = "Falta al menos un campo requerido.";
+		$response["message"] = "Falta al menos un campo requerido á é í ó ú ñ.";
 
 		echo json_encode($response);
 	}

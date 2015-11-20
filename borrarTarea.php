@@ -1,7 +1,6 @@
 <?php
 
 	require_once __DIR__ . '/db_connect.php';
-	require_once __DIR__ . '/notif.php';
 
 	//$db = new mysqli("localhost","root","","smed");
 	$db = new DB_Connect();
@@ -15,29 +14,23 @@
 	$response = array();
 
 	//Se checa por los campos requeridos.
-	if(isset($_POST['id_alumno']) && isset($_POST['comentario']) && isset($_POST['fecha'])){
-		$id_alumno = $_POST['id_alumno'];
-		$comentario = $_POST['comentario'];
-		$fecha = $_POST['fecha'];
+	if(isset($_POST['id_tarea'])){
+		$id_tarea = $_POST['id_tarea'];
 
 		//Se inserta un nuevo renglón.
-		//$result = mysql_query("INSERT INTO loginInfo(email,password) VALUES('$email','$password')");
-		$result = $db->query("INSERT INTO Reporte(id_alumno,comentario,fecha)
-								 VALUES('$id_alumno','$comentario','$fecha')");
+		$result = $db->query("DELETE FROM Tarea WHERE id_tarea = $id_tarea");
 
-		// SELECT * FROM Persona WHERE nombre="Nan";
 
 		//Se verifica si se ha insertado correctamente.
-		if($result){
+		if($db->affected_rows > 0){
 			$response["sucess"] = 1;
-			$response["message"] = "Operación exitosa.";
-			newNotif("Nuevo Reporte disponible.");	
+			$response["message"] = "Tarea eliminada.";
 
 			//Se envía la información por medio de JSON.
-			echo "Se ha insertado correctamente";
+			echo json_encode($response);
 		}else{
 			$response["sucess"] = 0;
-			$response["message"] = "Error en la inserción.";
+			$response["message"] = "Error, Tarea no encontrada.";
 
 			echo json_encode($response);
 		}

@@ -1,6 +1,7 @@
 <?php
 
 	require_once __DIR__ . '/db_connect.php';
+	require_once __DIR__ . '/notif.php';
 
 	//$db = new mysqli("localhost","root","","smed");
 	$db = new DB_Connect();
@@ -29,13 +30,17 @@
 		//Se verifica si se ha insertado correctamente.
 		if($result){
 			$response["sucess"] = 1;
-			$response["message"] = "Tarea creada.";
+			$response["message"] = "Operación exitosa.";
 
+			/// TODO seleccionar a quien se le mandará la notificación. un while?
+				newNotif("Nueva Tarea disponible.");	
+			
+			
 			//Se envía la información por medio de JSON.
 			echo json_encode($response);
 		}else{
 			$response["sucess"] = 0;
-			$response["message"] = "Error en la conexión.";
+			$response["message"] = "Error en la inserción.";
 
 			echo json_encode($response);
 		}
@@ -45,4 +50,5 @@
 
 		echo json_encode($response);
 	}
+
 ?>
