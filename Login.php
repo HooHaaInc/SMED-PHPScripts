@@ -49,7 +49,7 @@
 				$id_maestro = $id_maestro->fetch_object()->id_maestro;
 
 			}else{
-				$id_padre = $db->query("SELECT * FROM Padre WHERE id_persona = '$id_padre'");
+				$id_padre = $db->query("SELECT * FROM Padre WHERE id_persona = '$id_persona'");
 				$id_padre = $id_padre->fetch_object()->id_padre;
 			}
 		

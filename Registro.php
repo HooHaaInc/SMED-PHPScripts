@@ -49,24 +49,25 @@
 				$id_alumno = $id_a->fetch_object()->id_alumno;
 				$response["id_alumno"] = $id_alumno;
 
-			}else if($tipo_persona == 2){
+			} 
+			if($tipo_persona == 2){
 				$result2 = $db->query("INSERT INTO Maestro(id_persona) VALUES('$id_persona')");
 				$id_m = $db->query("SELECT * FROM Maestro WHERE id_persona = '$id_persona'");
 				$id_maestro = $id_m->fetch_object()->id_maestro;
 				$response["id_maestro"] = $id_maestro;
 
-			}else{
-				$result2 = $db->query("INSERT INTO Padres(id_persona) VALUES('$id_persona')");
+			}
+			if($tipo_persona == 3){
+				$result2 = $db->query("INSERT INTO Padre(id_persona) VALUES('$id_persona')");
 				$id_p = $db->query("SELECT * FROM Padre WHERE id_persona = '$id_persona'");
 				$id_padre = $id_p->fetch_object()->id_padre;
 				$response["id_padre"] = $id_padre;
-
 			}
 
 			if($result){
 				$response["sucess"] = 1;
 				$response["message"] = "Registro exitoso.";
-				$reponse["id_persona"] = $id_persona;
+				$response["id_persona"] = $id_persona;
 				$response["nombre"] = $nombre;
 				$response["apellido_paterno"] = $apellido_paterno;
 				$response["apellido_materno"] = $apellido_materno;

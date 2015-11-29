@@ -33,8 +33,30 @@
 			$response["message"] = "Operación exitosa.";
 
 			/// TODO seleccionar a quien se le mandará la notificación. un while?
-				newNotif("Nueva Tarea disponible.");	
-			
+
+			$notifs = $db->query("SELECT * FROM Alumno WHERE id_grupo = '$id_grupo'");
+
+			if($notifs->num_rows > 0){
+				$response["alumnos"] = array();
+
+				while($row = $notifs->fetch_array()){
+					$id_persona = $row["id_persona"];
+
+					echo "id_persona: '$id_persona'   ";
+
+					$res = $db->query("SELECT * FROM Usuario WHERE id_persona = '$id_persona'");
+					$user = $res->fetch_array();
+
+					$id = $user['gcm_regid'];
+
+					echo " '$id' ";
+
+					notificacion("Nueva Tarea disponible.",$id);
+					//echo "notificacion enviada \n\n\n";
+				}
+
+		//notificacion("Nueva Tarea disponible.",$user);	
+			}				
 			
 			//Se envía la información por medio de JSON.
 			echo json_encode($response);

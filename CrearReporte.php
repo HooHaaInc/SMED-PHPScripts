@@ -31,10 +31,32 @@
 		if($result){
 			$response["sucess"] = 1;
 			$response["message"] = "Operación exitosa.";
-			newNotif("Nuevo Reporte disponible.");	
+
+			$notifs = $db->query("SELECT * FROM Alumno WHERE id_alumno = '$id_alumno'");
+			$user = $notifs->fetch_array();
+			$id_grupo = $user['id_grupo'];
+
+			echo " '$id_grupo'";
+			
+			$notifs = $db->query("SELECT * FROM Grupo WHERE id_grupo = '$id_grupo'");
+			$user = $notifs->fetch_array();
+			$id_maestro = $user['id_maestro'];
+			echo " '$id_maestro'";
+
+			$notifs = $db->query("SELECT * FROM Maestro WHERE id_maestro = '$id_maestro'");
+			$user = $notifs->fetch_array();
+			$id_persona = $user['id_persona'];
+			echo " '$id_persona'";
+
+			$notifs = $db->query("SELECT * FROM Usuario WHERE id_persona = '$id_persona'");
+			$user = $notifs->fetch_array();
+			$id = $user['gcm_regid'];
+
+			notificacion("Nuevo Reporte disponible.",$id);
 
 			//Se envía la información por medio de JSON.
 			echo "Se ha insertado correctamente";
+			echo json_encode($response);
 		}else{
 			$response["sucess"] = 0;
 			$response["message"] = "Error en la inserción.";

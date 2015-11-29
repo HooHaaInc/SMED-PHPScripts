@@ -12,30 +12,37 @@
 
 	//Arreglo para la respuesta de JSON.
 	$response = array();
+	if(isset($_POST['id_grupo'])){
+		$id_grupo = $_POST['id_grupo'];
+		$result = $db->query("SELECT * FROM Tarea where id_grupo = '$id_grupo'");
 
-	$result = $db->query("SELECT * FROM Tarea");
+		if($result->num_rows > 0){
+			$response["tareas"] = array();
 
-	if($result->num_rows > 0){
-		$response["tareas"] = array();
+			while($row = $result->fetch_array()){
+				$tarea = array();
+				$tarea["id_tarea"] = $row["id_tarea"];
+				$tarea["id_grupo"] = $row["id_grupo"];
+				$tarea["titulo"] = $row["titulo"];
+				$tarea["descripcion"] = $row["descripcion"];
+				$tarea["materia"] = $row["materia"];
+				$tarea["fecha"] = $row["fecha"];
 
-		while($row = $result->fetch_array()){
-			$tarea = array();
-			$tarea["id_tarea"] = $row["id_tarea"];
-			$tarea["id_grupo"] = $row["id_grupo"];
-			$tarea["titulo"] = $row["titulo"];
-			$tarea["descripcion"] = $row["descripcion"];
-			$tarea["materia"] = $row["materia"];
-			$tarea["fecha"] = $row["fecha"];
+				array_push($response["tareas"],$tarea);
+			}
+			$response["sucess"] = 1;
+			$response["message"] = "Tareas encontradas.";
+			echo json_encode($response);
+		}else{
+			$response["sucess"] = 0;
+			$reponse["message"] = "No hay tareas.";
 
-			array_push($response["tareas"],$tarea);
+			echo json_encode($reponse);
 		}
-		$response["sucess"] = 1;
-		$response["message"] = "Tareas encontradas.";
-		echo json_encode($response);
 	}else{
 		$response["sucess"] = 0;
-		$reponse["message"] = "No hay tareas.";
+			$reponse["message"] = "Falta al menos un parametro.";
 
-		echo json_encode($reponse);
+			echo json_encode($reponse);
 	}
 ?>
