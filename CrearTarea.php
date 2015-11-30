@@ -3,7 +3,7 @@
 	require_once __DIR__ . '/db_connect.php';
 	require_once __DIR__ . '/notif.php';
 
-	//$db = new mysqli("localhost","root","","smed");
+	
 	$db = new DB_Connect();
 	$db = $db->connect();
 
@@ -32,8 +32,6 @@
 			$response["sucess"] = 1;
 			$response["message"] = "Operación exitosa.";
 
-			/// TODO seleccionar a quien se le mandará la notificación. un while?
-
 			$notifs = $db->query("SELECT * FROM Alumno WHERE id_grupo = '$id_grupo'");
 
 			if($notifs->num_rows > 0){
@@ -41,24 +39,13 @@
 
 				while($row = $notifs->fetch_array()){
 					$id_persona = $row["id_persona"];
-
-					echo "id_persona: '$id_persona'   ";
-
 					$res = $db->query("SELECT * FROM Usuario WHERE id_persona = '$id_persona'");
 					$user = $res->fetch_array();
-
 					$id = $user['gcm_regid'];
-
-					echo " '$id' ";
-
+					
 					notificacion("Nueva Tarea disponible.",$id);
-					//echo "notificacion enviada \n\n\n";
 				}
-
-		//notificacion("Nueva Tarea disponible.",$user);	
 			}				
-			
-			//Se envía la información por medio de JSON.
 			echo json_encode($response);
 		}else{
 			$response["sucess"] = 0;
