@@ -15,7 +15,8 @@
 	$response = array();
 
 	//Se checa por los campos requeridos.
-	if(isset($_POST['id_grupo']) && isset($_POST['fecha']) && isset($_POST['materia']) && isset($_POST['titulo']) && isset($_POST['descripcion'])){
+	if(isset($_POST['id_grupo']) && isset($_POST['fecha']) && isset($_POST['materia']) && 
+		isset($_POST['titulo']) && isset($_POST['descripcion'])){
 		$id_grupo = $_POST['id_grupo'];
 		$fecha = $_POST['fecha'];
 		$materia = $_POST['materia'];
